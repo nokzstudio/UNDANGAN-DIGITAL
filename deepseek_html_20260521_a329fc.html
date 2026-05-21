@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Wedding Invitation - Tika & Robi</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+
+    :root {
+      --navy: #1a2744;
+      --blush: #f0e8e4;
+      --rose: #c9a4a0;
+      --cream: #faf6f3;
+      --dark-navy: #111827;
+      --gold: #d4af37;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3 { font-family: 'Cormorant Garamond', serif; }
+    .script { font-family: 'Great Vibes', cursive; }
+    
+    /* ANIMASI MASUK */
+    .anim-fade { opacity: 0; transition: opacity .8s ease; }
+    .anim-up   { opacity: 0; transform: translateY(50px); transition: opacity .7s ease, transform .7s ease; }
+    .anim-left { opacity: 0; transform: translateX(-50px); transition: opacity .7s ease, transform .7s ease; }
+    .anim-right{ opacity: 0; transform: translateX(50px);  transition: opacity .7s ease, transform .7s ease; }
+    .anim-scale{ opacity: 0; transform: scale(0.8);        transition: opacity .6s ease, transform .6s ease; }
+    .anim-zoom { opacity: 0; transform: scale(1.15);       transition: opacity .8s ease, transform .8s ease; }
+
+    .anim-fade.visible,
+    .anim-up.visible,
+    .anim-left.visible,
+    .anim-right.visible,
+    .anim-scale.visible,
+    .anim-zoom.visible {
+      opacity: 1;
+      transform: translate(0,0) scale(1);
+    }
+
+    /* FADE UP */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all .8s ease;
+    }
+    .fade-up.show { opacity:1; transform:translateY(0); }
+
+    /* FIXED BUTTONS */
+    .music-btn {
+      position: fixed;
+      right: 16px;
+      bottom: 20px;
+      width: 50px; height: 50px;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(26,39,68,0.85);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.2);
+      z-index: 999; cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      color: white; font-size: 18px;
+      transition: transform .2s;
+    }
+    .music-btn:hover { transform: scale(1.1); }
+
+    /* OPENING */
+    .opening {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; justify-content: center; align-items: center;
+      flex-direction: column; text-align: center; padding: 20px;
+      background: #ffffff;
+    }
+
+    .particle {
+      position: absolute; width: 5px; height: 5px;
+      background: rgba(255, 255, 255, 0.6); border-radius: 999px;
+      animation: float 8s infinite linear;
+    }
+    @keyframes float {
+      from { transform: translateY(100vh) scale(0); }
+      to   { transform: translateY(-10vh) scale(1); }
+    }
+
+    .snowflake {
+      position: fixed; top: -10px;
+      color: rgba(255,255,255,0.7);
+      user-select: none; pointer-events: none;
+      z-index: 9998; animation: snowfall linear infinite;
+    }
+    @keyframes snowfall {
+      0%   { transform: translateY(-10px) translateX(0) rotate(0deg); opacity:0; }
+      10%  { opacity:1; }
+      100% { transform: translateY(110vh) translateX(40px) rotate(360deg); opacity:0; }
+    }
+
+    /* SECTION BACKGROUND STYLES dengan foto 1080x1920 */
+    .section-light {
+      position: relative;
+      background: linear-gradient(135deg, rgba(250,246,243,0.92) 0%, rgba(243,237,232,0.96) 100%);
+    }
+    .section-light::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('/background/BACKGROUND\ \ 1.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .section-light > * { position: relative; z-index: 2; }
+
+    .section-dark {
+      position: relative;
+      background: linear-gradient(135deg, rgba(26,39,68,0.88) 0%, rgba(20,34,49,0.92) 100%);
+    }
+    .section-dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('/background/BACKGROUND\ 3.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .section-dark::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .section-dark > * { position: relative; z-index: 2; }
+
+    /* DIVIDER */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: currentColor; opacity: 0.3;
+    }
+
+    /* RSVP INPUT */
+    .rsvp-input {
+      width: 100%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      padding: 14px 18px;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      transition: border-color .2s;
+    }
+    .rsvp-input:focus { border-color: var(--rose); }
+    .rsvp-input::placeholder { color: rgba(255,255,255,0.4); }
+    select.rsvp-input option { background: #1a2744; color: white; }
+
+    /* ACTION BUTTONS */
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 999px;
+      font-size: 13px; font-family: 'Poppins', sans-serif;
+      font-weight: 500; cursor: pointer;
+      transition: transform .2s, opacity .2s;
+      text-decoration: none;
+    }
+    .action-btn:hover { transform: scale(1.04); opacity: 0.9; }
+    .btn-maps, .btn-live { background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); color: white; border: 1px solid rgba(255,255,255,0.3); }
+
+    /* FLOWER WIND ANIMATION */
+    @keyframes flowerWindLeft{
+      0%{ transform: rotate(-18deg) translateY(0px) translateX(0px); }
+      25%{ transform: rotate(-8deg) translateY(-6px) translateX(4px); }
+      50%{ transform: rotate(6deg) translateY(-10px) translateX(8px); }
+      75%{ transform: rotate(-10deg) translateY(-4px) translateX(2px); }
+      100%{ transform: rotate(-18deg) translateY(0px) translateX(0px); }
+    }
+    @keyframes flowerWindRight{
+      0%{ transform: rotate(18deg) translateY(0px) translateX(0px); }
+      25%{ transform: rotate(8deg) translateY(-2px) translateX(-2px); }
+      50%{ transform: rotate(-6deg) translateY(-1px) translateX(-1px); }
+      75%{ transform: rotate(10deg) translateY(-2px) translateX(-2px); }
+      100%{ transform: rotate(18deg) translateY(0px) translateX(0px); }
+    }
+    .flower-left{ transform-origin: bottom right; animation: flowerWindLeft 6s linear infinite; }
+    .flower-right{ transform-origin: bottom left; animation: flowerWindRight 6s linear infinite; }
+
+    /* JANUR MASUK KIRI */
+@keyframes janurLeftIntro{
+  0%{
+    opacity: 0;
+    transform:
+      translateX(-120px)
+      translateY(-30px)
+      rotate(-12deg)
+      scale(.8);
+  }
+
+  100%{
+    opacity: 1;
+    transform:
+      translateX(0)
+      translateY(0)
+      rotate(0deg)
+      scale(1);
+  }
+}
+
+/* JANUR MASUK KANAN */
+/* JANUR MASUK KANAN - flip sudah masuk di transform */
+@keyframes janurRightIntro {
+  0% {
+    opacity: 0;
+    transform: scaleX(-1) translateX(-120px) translateY(-30px) rotate(-12deg) scale(.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(-1) translateX(0) translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+/* CLASS JANUR */
+.janur-left {
+  animation: janurLeftIntro 4s cubic-bezier(.22,1,.36,1) forwards;
+  animation-play-state: paused; /* tunda dulu */
+}
+
+.janur-right {
+  animation: janurRightIntro 4s cubic-bezier(.22,1,.36,1) forwards;
+  animation-play-state: paused;
+  opacity: 0;
+}
+  </style>
+</head>
+<body>
+
+<div id="snow-container"></div>
+
+<!-- ===================== OPENING ===================== -->
+<div class="opening overflow-hidden" id="opening">
+  <div class="absolute inset-0">
+    <img src="/background/BACKGROUND  2.png" class="w-full h-full object-cover opacity-30" />
+  </div>
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="particle" style="left:10%;animation-delay:0s"></div>
+    <div class="particle" style="left:30%;animation-delay:2s"></div>
+    <div class="particle" style="left:60%;animation-delay:4s"></div>
+    <div class="particle" style="left:80%;animation-delay:1s"></div>
+  </div>
+
+  <!-- CARD LEBIH KECIL UNTUK HP -->
+  <div class="relative z-10 w-full text-center" style="max-width:min(300px,80vw);">
+    <div class="bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl overflow-hidden p-4 pb-10" style="border-radius:300px;">
+      <div class="relative rounded-[30px] overflow-hidden mb-4" style="height:min(320px,85vw);">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] overflow-hidden border border-white/40" style="border-radius:200px 200px 30px 30px;">
+          <img src="/tika dan robi/FORMAL 1.jpeg" class="w-full h-full object-cover" />
+        </div>
+      </div>
+      <p class="tracking-[5px] text-xs text-neutral-700 mb-2">WEDDING INVITATION</p>
+      <h1 class="text-3xl text-neutral-800 font-regular leading-tight mb-4" style="font-family: 'Great Vibes', cursive !important; font-size: 42px;">Tika & Robi</h1>
+      <div class="mb-6">
+        <p class="text-neutral-700 text-sm mb-1">Kepada Yth:</p>
+        <h2 class="text-xl text-[#d89ca4] font-semibold" id="nama-tamu">Tamu Undangan</h2>
+      </div>
+      <button onclick="openInvitation()" class="bg-[#1a2744] hover:bg-[#253561] text-white rounded-full px-6 py-3 flex items-center mx-auto gap-2 transition duration-300 shadow-xl text-sm">
+        <span>✉</span> Open Invitation
+      </button>
+    </div>
+  </div>
+<!-- WATERMARK -->
+<div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 text-center">
+
+  <!-- LOGO -->
+  <img src="/LOGO ALFINO.png"
+       class="w-20 h-20 object-contain mx-auto opacity-100 mb-[-28px]" />
+</div>
+
+</div>
+
+<audio id="music" loop>
+  <source src="/kabagyan.mp3" type="audio/mp3">
+</audio>
+
+<!-- ===================== SECTION 1: AWAL (Light BG + foto 1080x1920) ===================== -->
+<section id="section1" class="min-h-screen flex items-center justify-center text-center px-6 relative overflow-hidden section-light">
+
+<!-- JANUR OVERLAY -->
+<div class="absolute top-0 left-0 w-full z-20 pointer-events-none overflow-visible">
+
+<!-- JANUR KIRI -->
+<img src="/janur.png"
+     class="absolute janur-left"
+     style="
+       top: 80px;
+       left: -24px;
+       height: min(42vh, 220px);   /* kontrol seberapa jauh ke bawah */
+       width: auto;
+       object-fit: contain;
+       object-position: top left;
+       opacity: 0.9;
+     " />
+
+<!-- JANUR KANAN -->
+<img src="/janur.png"
+     class="absolute janur-right"
+     style="
+       top: 80px;
+       right: -24px;
+       height: min(42vh, 220px);   /* sama dengan kiri */
+       width: auto;
+       object-fit: contain;
+       object-position: top right;
+       transform: scaleX(-1);
+       opacity: 0.9;
+     " />
+
+</div>
+  <div class="relative z-10 flex items-center justify-center" style="min-height: 100vh;">
+    <div class="relative flex items-center justify-center" style="width: 340px; height: 520px;">
+      <div id="s1-card" class="absolute inset-0 border-2 border-[#1a2744]/20" style="border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity .8s ease, transform .8s ease;
+  ">>
+  </div>
+      <div class="relative z-10 px-10 text-center">
+        <p id="s1-label" class="tracking-[4px] text-xs mb-6 text-[#1a2744] opacity-0 transform translate-y-[30px] transition-all duration-700 ease">THE WEDDING OF</p>
+        <h1 id="s1-name1" style="font-family: 'Great Vibes', serif; font-size: 72px; color: #1a2744; line-height: 1; opacity: 0; transform: translateY(40px); transition: all .7s ease;">Tika</h1>
+        <p id="s1-amp" class="tracking-[6px] text-sm my-3 text-[#1a2744] font-serif text-5xl opacity-0 transition-opacity .7s ease">&amp;</p>
+        <h1 id="s1-name2" style="font-family: 'Great Vibes', serif; font-size: 72px; color: #1a2744; line-height: 1; opacity: 0; transform: translateY(40px); transition: all .7s ease;">Robi</h1>
+        <p id="s1-date" class="mt-8 tracking-[4px] text-sm text-[#1a2744] font-bold opacity-0 transform translateY(20px) transition-all .7s ease">01 . 06 . 2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 2: WE FOUND LOVE (Dark BG + foto 1080x1920 + overlay) ===================== -->
+<section class="min-h-screen flex flex-col items-center justify-center px-6 py-20 text-center text-white relative overflow-hidden section-dark">
+  <div class="max-w-sm mx-auto text-center relative z-10">
+    <h2 class="text-5xl font-semibold mb-4 anim-up" style="font-family:'Great Vibes',serif;">We Found Love</h2>
+    <div class="relative mb-8 anim-scale" style="height:min(420px,110vw);">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] relative">
+        <div class="w-full h-full overflow-hidden shadow-2xl" style="border-radius:200px 200px 30px 30px; border:2px solid var(--gold);">
+          <img src="/tika dan robi/BUKU NIKAH 2.jpeg" class="w-full h-full object-cover" />
+        </div>
+        <img src="/bunga/ornamen bunga 2.png" class="absolute -top-[55px] -left-17 w-36 md:w-44 pointer-events-none select-none z-20 drop-shadow-2xl flower-left opacity-100" />
+        <img src="/bunga/ornamen bunga 2.png" class="absolute -bottom-[60px] -right-12 w-36 md:w-44 pointer-events-none select-none z-20 drop-shadow-2xl flower-right opacity-100" />
+      </div>
+    </div>
+    <div class="divider text-white/40 my-6 anim-fade"></div>
+    <p class="text-white/80 text-sm leading-relaxed italic px-4 anim-up">"Pernikahan adalah perjalanan panjang yang dimulai dari satu janji sederhana, yakni saling setia dalam suka dan duka. Namun, menjaga hubungan tetap hangat dan harmonis tidak selalu mudah."</p>
+    <p class="text-white/50 text-xs mt-3 tracking-widest anim-fade">(Quote Married)</p>
+  </div>
+</section>
+
+<!-- ===================== SECTION 3: MEMPELAI (Light BG + foto) ===================== -->
+<section class="relative overflow-hidden min-h-screen section-light">
+
+  <!-- FOTO BAWAH -->
+  <div class="absolute bottom-0 left-0 w-full z-0">
+
+    <!-- IMAGE -->
+    <img src="/tika dan robi/gandeng2.png"
+         class="w-full object-cover"
+         style="
+          height: 380px;
+          object-position: center bottom;
+         " />
+
+    <!-- GRADIENT SOFT -->
+    <div class="absolute inset-0"
+         style="
+          background:
+          linear-gradient(
+            to top,
+            rgba(250,246,243,0.1) 0%,
+            rgba(250,246,243,0.4) 20%,
+            rgba(250,246,243,0.75) 45%,
+            rgba(250,246,243,0.95) 70%,
+            #faf6f3 100%
+          );
+         ">
+    </div>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="relative z-10 flex flex-col justify-center min-h-screen px-6 py-16 pt-10 max-w-sm mx-auto text-center text-[#1a2744]">
+
+    <div>
+      <p class="text-xs leading-relaxed text-[#1a2744]/70 mb-6 anim-up">
+        Assalamualaikum Warahmatullahi Wabarakatuh<br/>
+        Maha suci Allah yang telah menciptakan Makhluk-Nya berpasang-pasangan.
+        Ya Allah perkenankan putra-putri kami :
+      </p>
+
+      <div class="divider text-[#1a2744]/30 anim-fade"></div>
+
+      <div class="mt-6 anim-up">
+        <h2 style="font-family:'Great Vibes',cursive; font-size: 58px; color:#1a2744;">
+          Tika
+        </h2>
+
+        <p class="text-xs tracking-widest text-[#1a2744]/70 mt-1">
+          Surtika Zaitun Nur
+        </p>
+
+        <p class="text-xs text-[#1a2744]/60 mt-2">
+          Putri Pertama dari<br/>
+          <span class="font-semibold text-[#1a2744]">
+            Bapak Suryadi & Ibu Siti Hayatun
+          </span>
+        </p>
+      </div>
+
+      <div class="my-5 anim-fade">
+        <p class="tracking-[6px] text-sm text-[#1a2744]/60 uppercase">
+          Dengan
+        </p>
+      </div>
+
+      <div class="anim-up">
+        <h2 style="font-family:'Great Vibes',cursive; font-size: 58px; color:#1a2744;">
+          Robi
+        </h2>
+
+        <p class="text-xs tracking-widest text-[#1a2744]/70 mt-1">
+          Robi Yogi Pratama
+        </p>
+
+        <p class="text-xs text-[#1a2744]/60 mt-2">
+          Putra Pertama dari<br/>
+          <span class="font-semibold text-[#1a2744]">
+            Bapak Purnomo & Ibu Harsini
+          </span>
+        </p>
+      </div>
+
+      <div class="divider text-[#1a2744]/30 mt-6 anim-fade"></div>
+    </div>
+
+    <div class="anim-up">
+      <p class="text-xs tracking-[4px] text-[#1a2744]/100 uppercase">
+        01 . 06 . 2026
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== SECTION 4: WEDDING EVENT (Dark BG + foto + overlay) ===================== -->
+<section class="py-20 px-6 text-center relative overflow-hidden min-h-screen section-dark">
+  <div class="max-w-sm mx-auto relative z-20">
+    <div class="border border-white/20 rounded-[70px] p-8 backdrop-blur-sm bg-white/5">
+      <p class="text-xs tracking-[5px] text-white mb-4 anim-up">WEDDING EVENT</p>
+      <p class="text-sm text-white/70 mb-6 anim-up">Acara Insya Allah akan dilaksanakan pada:</p>
+      <h2 class="script text-6xl text-white mb-4 anim-scale">Senin Wage</h2>
+      <div class="divider text-white/30 my-4 anim-fade"></div>
+      <p class="text-3xl font-bold tracking-widest text-white mb-2 anim-up">01 . 06 . 2026</p>
+      <div class="divider text-white/30 my-4 anim-fade"></div>
+      <div class="mb-6 anim-up"><p class="text-xs tracking-[4px] font-semibold text-white mb-2">Bertempat di :</p><p class="text-sm font-medium text-white mb-1">Rumah Mempelai Wanita</p><p class="text-xs text-white/60 mb-4">Batur ledokdawan rt04/04</p></div>
+      <div class="anim-up"><p class="text-xs tracking-[4px] font-semibold text-white mb-2">AKAD NIKAH</p><p class="text-sm text-white/70 mb-4">Rabu, 23 September 2025</p><p class="text-sm font-medium text-white mb-1">Rumah Mempelai Wanita</p><p class="text-xs text-white/60 mb-4">Batur ledokdawan rt04/04</p>
+      <div class="flex gap-3 justify-center flex-wrap"><a href="https://maps.google.com" target="_blank" class="action-btn btn-maps"><i class="fa-solid fa-location-dot"></i> Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 5: LOVE STORY (Light BG + foto) ===================== -->
+<section class="py-20 px-6 relative overflow-hidden section-light">
+  <div class="max-w-sm mx-auto fade-up relative z-10">
+    <div class="text-center mb-10"><span class="script text-6xl text-[#1a2744]">Love Story</span></div>
+    <div class="mb-10"><img src="/tika dan robi/FREESTYLE 1.jpeg" class="w-full rounded-2xl object-cover mb-4" style="height:220px;" /><h3 class="text-xl font-bold tracking-widest text-[#1a2744] text-center mb-2">AWAL BERTEMU</h3><div class="divider text-[#1a2744]/20 mb-3"></div><p class="text-sm text-center text-neutral-500 leading-relaxed">Tidak ada yang menyangka, sebuah pertemuan biasa dalam komunitas sosial justru menjadi awal dari kisah luar biasa ini.</p></div>
+    <div class="mb-10"><h3 class="text-xl font-bold tracking-widest text-[#1a2744] text-center mb-2">MENJALIN HUBUNGAN</h3><div class="divider text-[#1a2744]/20 mb-3"></div><p class="text-sm text-center text-neutral-500 leading-relaxed">Awalnya hanya sekadar teman berbagi cerita, perlahan rasa itu tumbuh, tanpa kami sadari sudah menjadi bagian penting dalam hidup masing-masing.</p></div>
+    <div class="mb-10"><h3 class="text-xl font-bold tracking-widest text-[#1a2744] text-center mb-2">LAMARAN</h3><div class="divider text-[#1a2744]/20 mb-3"></div><p class="text-sm text-center text-neutral-500 leading-relaxed">Dengan keberanian dan doa, lamaran sederhana menjadi titik baru yang mengukuhkan keyakinan kami untuk bersama dalam suka maupun duka.</p></div>
+    <div><h3 class="text-xl font-bold tracking-widest text-[#1a2744] text-center mb-2">MENIKAH</h3><div class="divider text-[#1a2744]/20 mb-3"></div><p class="text-sm text-center text-neutral-500 leading-relaxed">Dengan penuh rasa syukur dan bahagia, kami siap mengikat janji suci, mempersembahkan kisah cinta ini untuk menjadi perjalanan seumur hidup.</p></div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 6: GALLERY (Dark BG + foto + overlay) ===================== -->
+<section class="py-20 px-4 relative overflow-hidden min-h-screen section-dark">
+  <div class="max-w-sm mx-auto fade-up relative z-10">
+    <div class="mb-8"><h2 class="text-6xl font-bold text-white leading-none">Our<br/>Gallery</h2><p class="text-white/40 text-xs mt-2 italic">Every Love Story Is Beautiful, But Ours Is My Favorite.</p></div>
+    <div class="grid grid-cols-2 gap-2 mb-2"><img src="/tika dan robi/GANDENG.jpeg" class="rounded-2xl object-cover w-full hover:scale-[1.02] transition duration-500" style="height:160px;" /><img src="/tika dan robi/BUKU NIKAH 2.jpeg" class="rounded-2xl object-cover w-full hover:scale-[1.02] transition duration-500" style="height:160px;" /></div>
+    <div class="grid grid-cols-3 gap-2 mb-2"><img src="/tika dan robi/CIUM.jpeg" class="rounded-2xl object-cover w-full hover:scale-[1.02] transition duration-500" style="height:120px;" /><img src="/tika dan robi/FREESTYLE 1.jpeg" class="rounded-2xl object-cover w-full hover:scale-[1.02] transition duration-500" style="height:120px;" /><img src="/tika dan robi/gandeng2.png" class="rounded-2xl object-cover w-full hover:scale-[1.02] transition duration-500" style="height:120px;" /></div>
+    <div><img src="/tika dan robi/FORMAL 1.jpeg" class="rounded-2xl object-cover w-full hover:scale-[1.02] transition duration-500" style="height:320px; object-position: top;" /></div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 7: WEDDING GIFT (Light BG + foto) ===================== -->
+<section class="py-20 px-6 relative overflow-hidden section-light">
+  <div class="max-w-sm mx-auto fade-up text-center">
+    <p class="text-xs tracking-[5px] text-[#c9a4a0] mb-2">WEDDING GIFT</p>
+    <h2 class="text-4xl text-[#1a2744] font-semibold mb-8">Wedding Gift</h2>
+    <div class="relative mb-4 overflow-hidden rounded-[24px] shadow-xl" style="background: linear-gradient(135deg, #1a2744 0%, #2d3f6e 100%);">
+      <div class="rounded-[22px] p-7 text-left relative overflow-hidden bg-white/10 backdrop-blur-sm">
+        <div class="flex items-center gap-3 mb-5"><div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center"><svg width="32" height="20" viewBox="0 0 120 60"><rect x="4" y="8" width="8" height="44" fill="#FF6600"/><rect x="4" y="8" width="22" height="8" fill="#FF6600"/><rect x="4" y="26" width="20" height="7" fill="#FF6600"/><rect x="4" y="44" width="22" height="8" fill="#FF6600"/><rect x="22" y="8" width="4" height="18" rx="2" fill="#FF6600"/><rect x="20" y="33" width="6" height="19" rx="2" fill="#FF6600"/></svg></div><div><p class="text-xs tracking-[3px] text-white/50">BANK</p><p class="text-white font-semibold text-sm tracking-widest">BNI</p></div></div>
+        <p class="text-white/50 text-xs mb-1 tracking-widest">NOMOR REKENING</p>
+        <p class="text-white font-semibold text-2xl mb-1 tracking-widest">1991 3960 74</p>
+        <p class="text-white/60 text-xs mb-6">a.n. Surtika Zaitun Nur</p>
+        <button onclick="copyRekening('1991396074')" class="w-full py-3 rounded-2xl text-sm font-medium bg-white/20 backdrop-blur border border-white/30 text-white hover:scale-[1.02] transition">📋 Salin Nomor Rekening</button>
+      </div>
+    </div>
+    <div class="relative overflow-hidden rounded-[24px] shadow-xl" style="background: linear-gradient(135deg, #003f88 0%, #0055b3 100%);">
+      <div class="rounded-[22px] p-7 text-left relative overflow-hidden bg-white/10 backdrop-blur-sm">
+        <div class="flex items-center gap-3 mb-5"><div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center"><svg width="32" height="20" viewBox="0 0 120 60"><rect x="2" y="8" width="8" height="44" fill="white"/><rect x="2" y="8" width="22" height="8" fill="white"/><rect x="2" y="26" width="20" height="7" fill="white"/><rect x="2" y="44" width="22" height="8" fill="white"/></svg></div><div><p class="text-xs tracking-[3px] text-white/50">BANK</p><p class="text-white font-semibold text-sm tracking-widest">BRI</p></div></div>
+        <p class="text-white/50 text-xs mb-1 tracking-widest">NOMOR REKENING</p>
+        <p class="text-white font-semibold text-2xl mb-1 tracking-widest">5996 0104 8561 535</p>
+        <p class="text-white/60 text-xs mb-6">a.n. Robi Yogi Pratama</p>
+        <button onclick="copyRekening('599601048561535')" class="w-full py-3 rounded-2xl text-sm font-medium bg-white/20 backdrop-blur border border-white/30 text-white hover:scale-[1.02] transition">📋 Salin Nomor Rekening</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 8: RSVP (Dark BG + foto + overlay) ===================== -->
+<section class="py-20 px-6 relative overflow-hidden section-dark">
+  <div class="max-w-sm mx-auto fade-up text-center">
+    <p class="text-xs tracking-[5px] text-[#c9a4a0] mb-2">RSVP</p>
+    <h2 class="text-4xl text-white font-semibold mb-2">Konfirmasi Kehadiran</h2>
+    <p class="text-white/50 text-sm mb-8">Mohon konfirmasi kehadiran Anda sebelum 30 November 2026</p>
+    <div class="bg-white/10 backdrop-blur-sm rounded-[24px] p-6 border border-white/10 space-y-4 text-left">
+      <div><label class="text-xs text-white/50 tracking-widest block mb-2">NAMA LENGKAP</label><input type="text" placeholder="Masukkan nama Anda" class="rsvp-input" /></div>
+      <div><label class="text-xs text-white/50 tracking-widest block mb-2">KEHADIRAN</label><select class="rsvp-input"><option value="hadir">✅ Insya Allah Hadir</option><option value="tidak">❌ Tidak Hadir</option></select></div>
+      <div><label class="text-xs text-white/50 tracking-widest block mb-2">JUMLAH TAMU</label><input type="number" placeholder="1" min="1" max="5" class="rsvp-input" /></div>
+      <div><label class="text-xs text-white/50 tracking-widest block mb-2">UCAPAN & DOA</label><textarea rows="4" placeholder="Tuliskan ucapan dan doa terbaik Anda..." class="rsvp-input resize-none"></textarea></div>
+      <button onclick="kirimRSVP()" class="w-full py-4 rounded-2xl font-semibold transition hover:opacity-90 bg-gradient-to-r from-[#c9a4a0] to-[#d89ca4] text-white">💌 Kirim RSVP</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER (Solid warna dark, teks putih) ===================== -->
+<footer class="py-16 px-6 text-center relative overflow-hidden" style="background: #0f172a;">
+  <div class="relative z-10">
+    <p class="text-xs tracking-[5px] text-[#c9a4a0] mb-4">THANK YOU</p>
+    <h2 class="script text-6xl text-white mb-4">Tika & Robi</h2>
+    <p class="text-sm text-white/80 max-w-xs mx-auto">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+    <p class="text-xs text-white/50 mt-6">01 . 06 . 2026</p>
+  </div>
+</footer>
+
+<div class="music-btn" id="music-btn" onclick="toggleMusic()"><i class="fa-solid fa-compact-disc" id="music-icon"></i></div>
+
+<script>
+  const animEls = document.querySelectorAll('.anim-fade,.anim-up,.anim-left,.anim-right,.anim-scale,.anim-zoom');
+  const animObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); animObserver.unobserve(entry.target); } }); }, { threshold: 0.15 });
+  animEls.forEach(el => animObserver.observe(el));
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const fadeObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('show'); }); }, { threshold: 0.1 });
+  fadeEls.forEach(el => fadeObserver.observe(el));
+  const urlParams = new URLSearchParams(window.location.search);
+  const namaTamu = urlParams.get('nama');
+  if(namaTamu) document.getElementById('nama-tamu').textContent = decodeURIComponent(namaTamu);
+
+ function openInvitation() {
+  const music = document.getElementById('music');
+  music.volume = 0.5;
+  music.play().catch(() => {});
+  
+  const opening = document.getElementById('opening');
+  opening.style.transition = 'opacity .8s ease';
+  opening.style.opacity = '0';
+  
+  setTimeout(() => {
+    opening.style.display = 'none';
+
+    // Jalankan animasi janur setelah opening hilang
+    document.querySelectorAll('.janur-left, .janur-right').forEach(el => {
+      el.style.animationPlayState = 'running';
+    });
+
+    ['s1-card','s1-label','s1-name1','s1-amp','s1-name2','s1-date'].forEach((id, idx) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }
+      }, 500 + idx * 200);
+    });
+  }, 800);
+}
+  function toggleMusic(){ const music = document.getElementById('music'); music.paused ? music.play() : music.pause(); }
+  function copyRekening(nomor){ navigator.clipboard.writeText(nomor).then(() => alert('Nomor rekening '+nomor+' berhasil disalin!')); }
+  function kirimRSVP(){ alert('Terima kasih! Konfirmasi kehadiran Anda telah diterima 💌'); }
+  const snowContainer = document.getElementById('snow-container');
+  setInterval(() => { const s = document.createElement('div'); s.classList.add('snowflake'); s.innerHTML = '❄'; s.style.left = Math.random() * window.innerWidth + 'px'; s.style.fontSize = (Math.random() * 10 + 8) + 'px'; s.style.animationDuration = (Math.random() * 5 + 6) + 's'; s.style.opacity = Math.random() * 0.6 + 0.2; snowContainer.appendChild(s); setTimeout(() => s.remove(), 12000); }, 300);
+</script>
+</body>
+</html>

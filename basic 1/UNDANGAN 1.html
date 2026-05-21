@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Vintage Jawa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        body { font-family: 'Playfair Display', serif; background-color: #f4e1d2; color: #4a3728; }
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-vintage { font-family: 'Cinzel Decorative', serif; }
+        .bg-batik {
+            background-image: url('https://www.transparenttextures.com/patterns/batik-fractal.png');
+            background-color: #f4e1d2;
+        }
+        .overlay { background: rgba(0, 0, 0, 0.5); }
+        #cover {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100; display: flex; align-items: center; justify-content: center;
+            background: url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            transition: transform 0.8s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-batik">
+
+    <!-- Cover Page -->
+    <div id="cover">
+        <div class="overlay absolute inset-0"></div>
+        <div class="relative text-center text-white p-6">
+            <h2 class="text-xl mb-4">THE WEDDING OF</h2>
+            <h1 class="text-6xl font-script mb-6">Rama & Shinta</h1>
+            <p class="mb-8 italic italic">Kepada Bapak/Ibu/Saudara/i:</p>
+            <h3 class="text-2xl font-bold mb-8 uppercase">Nama Tamu</h3>
+            <button onclick="openInvitation()" class="bg-[#8b5e34] hover:bg-[#6f4a2a] text-white px-8 py-3 rounded-full transition duration-300">
+                Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <main id="main-content" class="hidden">
+        
+        <!-- Hero Section -->
+        <section class="h-screen flex flex-col items-center justify-center text-center p-6 bg-white bg-opacity-80 m-4 border-8 border-[#8b5e34]">
+            <div data-aos="fade-up">
+                <p class="text-lg uppercase tracking-widest mb-4">Mempelai Pria & Wanita</p>
+                <h1 class="text-7xl font-script text-[#8b5e34]">Rama & Shinta</h1>
+                <p class="mt-6 text-xl">12 . 12 . 2024</p>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section class="py-20 px-6 text-center max-w-4xl mx-auto">
+            <div data-aos="fade-right" class="mb-12">
+                <h2 class="text-4xl font-script text-[#8b5e34]">Raden Rama Wijaya</h2>
+                <p class="mt-2 text-sm italic">Putra dari Bapak Suherman & Ibu Siti</p>
+            </div>
+            <div class="text-4xl font-vintage my-8">&</div>
+            <div data-aos="fade-left">
+                <h2 class="text-4xl font-script text-[#8b5e34]">Dewi Shinta</h2>
+                <p class="mt-2 text-sm italic">Putri dari Bapak Budiman & Ibu Ani</p>
+            </div>
+        </section>
+
+        <!-- Event Details -->
+        <section class="py-20 bg-[#4a3728] text-[#f4e1d2] text-center">
+            <div class="grid md:grid-cols-2 gap-10 px-6 max-w-5xl mx-auto">
+                <div data-aos="zoom-in" class="border border-[#f4e1d2] p-8">
+                    <h3 class="text-3xl font-script mb-4">Akad Nikah</h3>
+                    <p>Sabtu, 12 Desember 2024</p>
+                    <p>08.00 - 10.00 WIB</p>
+                    <p class="mt-4 font-bold">Masjid Agung Surakarta</p>
+                </div>
+                <div data-aos="zoom-in" data-aos-delay="200" class="border border-[#f4e1d2] p-8">
+                    <h3 class="text-3xl font-script mb-4">Resepsi</h3>
+                    <p>Sabtu, 12 Desember 2024</p>
+                    <p>11.00 - Selesai</p>
+                    <p class="mt-4 font-bold">Gedung Wayang Orang Sriwedari</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP -->
+        <section class="py-20 px-6 max-w-lg mx-auto text-center">
+            <h2 class="text-4xl font-script text-[#8b5e34] mb-8">Konfirmasi Kehadiran</h2>
+            <form class="space-y-4">
+                <input type="text" placeholder="Nama Anda" class="w-full p-3 border border-[#8b5e34] bg-transparent">
+                <select class="w-full p-3 border border-[#8b5e34] bg-transparent">
+                    <option>Hadir</option>
+                    <option>Tidak Hadir</option>
+                </select>
+                <button type="submit" class="w-full bg-[#8b5e34] text-white py-3">Kirim Konfirmasi</button>
+            </form>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-10 text-center border-t border-[#8b5e34]">
+            <p class="font-script text-2xl text-[#8b5e34]">Rama & Shinta</p>
+            <p class="text-xs mt-2 uppercase">Made with Love</p>
+        </footer>
+
+    </main>
+
+    <!-- Audio (Optional) -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000 });
+
+        function openInvitation() {
+            // Sembunyikan Cover dengan transisi
+            document.getElementById('cover').style.transform = 'translateY(-100%)';
+            
+            // Tampilkan konten utama
+            document.getElementById('main-content').classList.remove('hidden');
+            
+            // Putar Musik
+            const audio = document.getElementById('bgMusic');
+            audio.play();
+            
+            // Berikan sedikit delay agar transisi cover selesai sebelum scroll aktif
+            setTimeout(() => {
+                document.getElementById('cover').classList.add('hidden');
+                window.scrollTo(0, 0);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
